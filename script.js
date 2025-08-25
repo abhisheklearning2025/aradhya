@@ -1,3 +1,22 @@
+// Mobile menu toggle
+const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+const navMenu = document.querySelector('.nav-menu');
+
+if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+}
+
+// Close mobile menu when clicking on a link
+document.querySelectorAll('.nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenuToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+    });
+});
+
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -12,43 +31,45 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Custom cursor
+// Custom cursor (desktop only)
 const cursor = document.querySelector('.cursor');
-let mouseX = 0;
-let mouseY = 0;
-let cursorX = 0;
-let cursorY = 0;
+if (cursor && window.innerWidth > 768) {
+    let mouseX = 0;
+    let mouseY = 0;
+    let cursorX = 0;
+    let cursorY = 0;
 
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-});
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
 
-function animateCursor() {
-    const speed = 0.1;
-    cursorX += (mouseX - cursorX) * speed;
-    cursorY += (mouseY - cursorY) * speed;
-    
-    cursor.style.left = cursorX + 'px';
-    cursor.style.top = cursorY + 'px';
-    
-    requestAnimationFrame(animateCursor);
+    function animateCursor() {
+        const speed = 0.1;
+        cursorX += (mouseX - cursorX) * speed;
+        cursorY += (mouseY - cursorY) * speed;
+        
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+    }
+
+    animateCursor();
+
+    // Cursor effects on hover
+    document.querySelectorAll('a, button, .hobby-card, .achievement-card').forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursor.style.transform = 'scale(2)';
+            cursor.style.backgroundColor = 'rgba(102, 126, 234, 0.2)';
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            cursor.style.transform = 'scale(1)';
+            cursor.style.backgroundColor = 'transparent';
+        });
+    });
 }
-
-animateCursor();
-
-// Cursor effects on hover
-document.querySelectorAll('a, button, .hobby-card, .achievement-card').forEach(element => {
-    element.addEventListener('mouseenter', () => {
-        cursor.style.transform = 'scale(2)';
-        cursor.style.backgroundColor = 'rgba(102, 126, 234, 0.2)';
-    });
-    
-    element.addEventListener('mouseleave', () => {
-        cursor.style.transform = 'scale(1)';
-        cursor.style.backgroundColor = 'transparent';
-    });
-});
 
 // Navbar background change on scroll
 window.addEventListener('scroll', () => {
@@ -85,20 +106,22 @@ document.querySelectorAll('section').forEach(section => {
     observer.observe(section);
 });
 
-// Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const heroContent = document.querySelector('.hero-content');
-    const floatingIcons = document.querySelector('.floating-icons');
-    
-    if (heroContent && window.innerWidth > 768) {
-        heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
-    }
-    
-    if (floatingIcons) {
-        floatingIcons.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
-});
+// Parallax effect for hero section (desktop only)
+if (window.innerWidth > 768) {
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const heroContent = document.querySelector('.hero-content');
+        const floatingIcons = document.querySelector('.floating-icons');
+        
+        if (heroContent) {
+            heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+        
+        if (floatingIcons) {
+            floatingIcons.style.transform = `translateY(${scrolled * 0.3}px)`;
+        }
+    });
+}
 
 // Achievement cards hover effect with particles
 document.querySelectorAll('.achievement-card').forEach(card => {
